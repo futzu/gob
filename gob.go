@@ -1,6 +1,6 @@
 // Group of bits
 
-package gob
+package cuei
 
 import (
 	"fmt"
@@ -21,8 +21,8 @@ func (g *Gob) Load(bites []byte) {
 	g.idx = 0
 }
 
-// Chunk slices bitcount of bits and returns it as a uint64
-func (g *Gob) Chunk(bitcount uint) *big.Int {
+// chunk slices bitcount of bits and returns it as a uint64
+func (g *Gob) chunk(bitcount uint) *big.Int {
 	j := new(big.Int)
 	d := g.idx + bitcount
 	j.SetString(g.bits[g.idx:d], 2)
@@ -32,28 +32,28 @@ func (g *Gob) Chunk(bitcount uint) *big.Int {
 
 // UInt8 trims UInt64 to 8 bits
 func (g *Gob) UInt8(bitcount uint) uint8 {
-	j := g.UInt64(bitcount)
+	j := g.chunk(bitcount)
 	return uint8(j)
 
 }
 
 // UInt16 trims UInt64 to 16 bits
 func (g *Gob) UInt16(bitcount uint) uint16 {
-	j := g.UInt64(bitcount)
+	j := g.chunk(bitcount)
 	return uint16(j)
 
 }
 
 // UInt32 trims UInt64 to 32 bits
 func (g *Gob) UInt32(bitcount uint) uint32 {
-	j := g.UInt64(bitcount)
+	j := g.chunk(bitcount)
 	return uint32(j)
 
 }
 
 // UInt64 is a wrapper for Chunk
 func (g *Gob) UInt64(bitcount uint) uint64 {
-	j := g.Chunk(bitcount)
+	j := g.chunk(bitcount)
 	return j.Uint64()
 
 }
@@ -68,7 +68,7 @@ func (g *Gob) Bool() bool {
 
 // Float slices bitcount of bits and returns  float64
 func (g *Gob) Float(bitcount uint) float64 {
-	j := g.UInt64(bitcount)
+	j := g.chunk(bitcount)
 	return float64(j)
 }
 
